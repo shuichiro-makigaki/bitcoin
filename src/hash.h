@@ -8,7 +8,7 @@
 
 #include <crypto/ripemd160.h>
 #include <crypto/sha256.h>
-//#include <crypto/Argon2/Source/C++11/Argon2/argon2.h>
+#include <crypto/Argon2/Source/C++11/Argon2/argon2.h>
 #include <prevector.h>
 #include <serialize.h>
 #include <uint256.h>
@@ -147,33 +147,33 @@ public:
     }
 };
 
-//class CHashWriterArgon2: public CHashWriter
-//{
-//private:
-//    std::vector<unsigned char> buf;
-//
-//public:
-//
-//    CHashWriterArgon2(int nTypeIn, int nVersionIn) : CHashWriter(nTypeIn, nVersionIn) {}
-//
-//    void write(const char *pch, size_t size) {
-//        buf.insert(buf.end(), pch, pch + size);
-//    }
-//
-//    uint256 GetHash() {
-//        uint256 result;
-//        assert(buf.size() == 80);
-//        hash_argon2d(&result, 32, buf.data(), buf.size(), buf.data(), buf.size(), 3, 12);
-//        return result;
-//    }
-//
-//    template<typename T>
-//    CHashWriterArgon2& operator<<(const T& obj) {
-//        // Serialize to this stream
-//        ::Serialize(*this, obj);
-//        return (*this);
-//    }
-//};
+class CHashWriterArgon2: public CHashWriter
+{
+private:
+    std::vector<unsigned char> buf;
+
+public:
+
+    CHashWriterArgon2(int nTypeIn, int nVersionIn) : CHashWriter(nTypeIn, nVersionIn) {}
+
+    void write(const char *pch, size_t size) {
+        buf.insert(buf.end(), pch, pch + size);
+    }
+
+    uint256 GetHash() {
+        uint256 result;
+        assert(buf.size() == 80);
+        hash_argon2d(&result, 32, buf.data(), buf.size(), buf.data(), buf.size(), 3, 12);
+        return result;
+    }
+
+    template<typename T>
+    CHashWriterArgon2& operator<<(const T& obj) {
+        // Serialize to this stream
+        ::Serialize(*this, obj);
+        return (*this);
+    }
+};
 
 /** Reads data from an underlying stream, while hashing the read data. */
 template<typename Source>
@@ -215,6 +215,14 @@ template<typename T>
 uint256 SerializeHash(const T& obj, int nType=SER_GETHASH, int nVersion=PROTOCOL_VERSION)
 {
     CHashWriter ss(nType, nVersion);
+    ss << obj;
+    return ss.GetHash();
+}
+
+template<typename T>
+uint256 SerializeHashArgon2(const T& obj, int nType=SER_GETHASH, int nVersion=PROTOCOL_VERSION)
+{
+    CHashWriterArgon2 ss(nType, nVersion);
     ss << obj;
     return ss.GetHash();
 }
