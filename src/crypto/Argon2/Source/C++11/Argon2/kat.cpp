@@ -13,7 +13,7 @@
 
 #include <cstdio>
 #include <inttypes.h>
-
+#include <stdlib.h>
 #include <string>
 
 #include "argon2.h"
