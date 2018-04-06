@@ -11,10 +11,7 @@
 #include <utilstrencodings.h>
 
 #include <assert.h>
-#include <pow.h>
 #include <chainparamsseeds.h>
-#include <arith_uint256.h>
-#include <iostream>
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -199,24 +196,6 @@ public:
         pchMessageStart[3] = 0x07;
         nDefaultPort = 18333;
         nPruneAfterHeight = 1000;
-        // Genesis Block mining
-//        arith_uint256 pw = UintToArith256(consensus.powLimit);
-//        std::cout << strprintf("powLimit: %x", pw.GetCompact()) << std::endl;
-//        for (uint32_t i = 0; i < 999999999; i++) {
-//            bool fNegative;
-//            bool fOverflow;
-//            arith_uint256 bnTarget;
-//            genesis = CreateGenesisBlock(1380553200, i, pw.GetCompact(), 1, 50 * COIN);
-//            bnTarget.SetCompact(genesis.nBits, &fNegative, &fOverflow);
-//            if (fNegative || bnTarget == 0 || fOverflow || bnTarget > UintToArith256(consensus.powLimit))
-//                continue;
-//            if (UintToArith256(genesis.GetHash()) > bnTarget)
-//                continue;
-//            std::cout << "nNonce: " << i << std::endl;
-//            std::cout << "hashGenesisBlock: " << genesis.GetHash().GetHex() << std::endl;
-//            std::cout << "hashMerkleRoot: " << genesis.hashMerkleRoot.GetHex() << std::endl;
-//            break;
-//        }
         genesis = CreateGenesisBlock(1380553200, 18584, 0x1e4fffff, 1, 50 * COIN); // 1380553200 == 2013-10-01T00:00:00+09:00
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x00002a6e71a230b8f7899804d1bc7278c96b28dae655ef49d449d6dc93a49b15"));
