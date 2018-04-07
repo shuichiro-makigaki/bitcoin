@@ -163,7 +163,7 @@ public:
     uint256 GetHash() {
         uint256 result;
         assert(buf.size() == 80);
-        hash_argon2d(&result, 32, buf.data(), buf.size(), buf.data(), buf.size(), 3, 12);
+        hash_argon2d(&result, 32, buf.data(), buf.size(), buf.data(), buf.size(), 3, 4096);
         return result;
     }
 
