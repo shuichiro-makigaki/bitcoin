@@ -13,7 +13,9 @@ Build AdTechPoint Core.
 ```bash
 git checkout atp
 # Next, build Argon2
-cd src/crypto/Argon2/Source/C++11
+cd src/crypto/Argon2
+mkdir Build
+cd Source/C++11
 make argon2-ar
 # return,
 cd ../../../../../
