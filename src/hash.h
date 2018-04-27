@@ -150,26 +150,16 @@ public:
 class CHashWriterArgon2: public CHashWriter
 {
 private:
-    std::vector<unsigned char> buf;
-
+    std::vector<unsigned char> vBuf;
 public:
-
     CHashWriterArgon2(int nTypeIn, int nVersionIn) : CHashWriter(nTypeIn, nVersionIn) {}
-
-    void write(const char *pch, size_t size) {
-        buf.insert(buf.end(), pch, pch + size);
-    }
-
+    void write(const char *pch, size_t size) { vBuf.insert(vBuf.end(), pch, pch + size); }
     uint256 GetHash() {
         uint256 result;
-        assert(buf.size() == 80);
-        hash_argon2d(&result, 32, buf.data(), buf.size(), buf.data(), buf.size(), 3, 4096);
+        hash_argon2d(&result, 32, vBuf.data(), vBuf.size(), vBuf.data(), vBuf.size(), 1, 1024 * 256);
         return result;
     }
-
-    template<typename T>
-    CHashWriterArgon2& operator<<(const T& obj) {
-        // Serialize to this stream
+    template<typename T> CHashWriterArgon2& operator<<(const T& obj) {
         ::Serialize(*this, obj);
         return (*this);
     }

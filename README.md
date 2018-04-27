@@ -1,3 +1,30 @@
+This is a branch for the "AdTechPoint" digital currency.
+
+Install requirements following `doc/build-*.md`.
+
+e.g.
+
+```bash
+brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python3 qt libevent qrencode
+```
+
+Build AdTechPoint Core.
+
+```bash
+git checkout atp
+# Next, build Argon2
+cd src/crypto/Argon2/Source/C++11
+make argon2-ar
+# return,
+cd ../../../../../
+# and build AdTechPoint Core
+./autogen.sh
+./configure --disable-tests --disable-bench --disable-zmq
+make
+```
+
+The original Bitcoin's README starts from here:
+
 Bitcoin Core integration/staging tree
 =====================================
 
